@@ -1,0 +1,49 @@
+{
+ "geo": "AR",
+ "seen": {
+  "catalog/psp/ereus-psp-terms": {
+   "date": "2026-10-16T15:55:08.327Z",
+   "title": "Ereus PSP: условия работы"
+  },
+  "catalog/psp/fondy-terms": {
+   "date": "2026-10-16T15:55:09.901Z",
+   "title": "Fondy: условия работы"
+  },
+  "catalog/psp/insideex-terms": {
+   "date": "2026-10-16T15:55:11.228Z",
+   "title": "InsideEx: условия работы"
+  },
+  "catalog/psp/jupiter-terms": {
+   "date": "2026-10-16T15:55:11.749Z",
+   "title": "Jupiter: условия работы"
+  },
+  "catalog/psp/loopex-terms": {
+   "date": "2026-10-16T15:55:12.082Z",
+   "title": "LOOPEX: условия работы"
+  },
+  "catalog/psp/mercado-pago-terms": {
+   "date": "2026-10-16T15:55:12.778Z",
+   "title": "Mercado Pago: условия работы"
+  },
+  "catalog/psp/nirvana-terms": {
+   "date": "2026-10-16T15:55:13.501Z",
+   "title": "Nirvana: условия работы"
+  },
+  "catalog/psp/pagsmile-terms": {
+   "date": "2026-10-16T15:55:14.599Z",
+   "title": "Pagsmile: условия работы"
+  },
+  "catalog/psp/rebill-terms": {
+   "date": "2026-10-16T15:55:17.539Z",
+   "title": "Rebill: условия работы"
+  },
+  "catalog/psp/unicompay-terms": {
+   "date": "2026-10-16T15:55:19.471Z",
+   "title": "UniComPay: условия работы"
+  },
+  "catalog/tech/paystar-direct-connect-edinyy-api-dlya-podklyucheniya-platezhnyh-provayderov": {
+   "date": "2026-11-03T14:46:48.830Z",
+   "title": "PayStar Direct Connect — единый API для подключения платёжных провайдеров"
+  }
+ }
+}
