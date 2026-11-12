@@ -41,7 +41,7 @@ from bs4 import BeautifulSoup
 BASE = "https://nominal.top"
 GEO = os.getenv("GEO", "AR").upper()
 LOCALE = os.getenv("LOCALE", "ru")
-SECTIONS = [s.strip() for s in os.getenv("SECTIONS", "offers").split(",") if s.strip()]
+SECTIONS = [s.strip() for s in os.getenv("SECTIONS", "all,offers,requests").split(",") if s.strip()]
 STATE_FILE = Path(os.getenv("STATE_FILE", "seen.json"))
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
@@ -72,6 +72,8 @@ class Offer:
     geos: list[str] = field(default_factory=list)
     extra_geos: int = 0
     rate: str = ""        # ставка, напр. "IN 3%"
+    kind_type: str = "offer"      # offer / request / company
+    audience_label: str = ""      # "For" / "Looking for"
 
 
 def clean(text: str) -> str:
@@ -101,20 +103,40 @@ def parse_cards(page_html: str) -> list[Offer]:
         header = a.find("div")
         badge = a.select_one(".badge")
         time_el = a.find("time")
-        company_el = header.select_one("span.truncate span.truncate") if header else None
-        if company_el is None and header:
-            company_el = header.select_one("span.truncate")
+        is_company = badge is None and time_el is None  # карточка компании из общего каталога
 
         ps = a.find_all("p", recursive=False)
-        title = clean(ps[0].get_text()) if ps else ""
-        description = ""
+        title, description, company_el = "", "", None
         audience: list[str] = []
-        for p in ps[1:]:
-            chips = p.select(".chip")
-            if chips and p.select_one(".text-muted"):
-                audience = [clean(c.get_text()) for c in chips]
-            elif "line-clamp-2" in (p.get("class") or []):
-                description = clean(p.get_text())
+        audience_label = ""
+        methods: list[str] = []
+
+        if is_company:
+            name_el = header.select_one("p") if header else None
+            title = clean(name_el.get_text()) if name_el else ""
+            for p in ps:
+                if "line-clamp-2" in (p.get("class") or []):
+                    description = clean(p.get_text())
+            cats = a.find("div", class_="flex-wrap", recursive=False)
+            if cats:
+                audience = [clean(c.get_text()) for c in cats.select(".chip")]
+            kind = "Компания" if LOCALE == "ru" else "Company"
+            kind_type = "company"
+        else:
+            company_el = header.select_one("span.truncate span.truncate") if header else None
+            if company_el is None and header:
+                company_el = header.select_one("span.truncate")
+            title = clean(ps[0].get_text()) if ps else ""
+            for p in ps[1:]:
+                chips = p.select(".chip")
+                label_el = p.select_one(".text-muted")
+                if chips and label_el:
+                    audience = [clean(c.get_text()) for c in chips]
+                    audience_label = clean(label_el.get_text()).rstrip(":")
+                elif "line-clamp-2" in (p.get("class") or []):
+                    description = clean(p.get_text())
+            kind = clean(badge.get_text()) if badge else ""
+            kind_type = "request" if badge and "badge-accent" in badge.get("class", []) else "offer"
 
         fields = []
         for span in a.select("div.space-y-2 span.min-w-0"):
@@ -122,8 +144,12 @@ def parse_cards(page_html: str) -> list[Offer]:
             value = span.select_one(".font-medium")
             if label and value:
                 fields.append((clean(label.get_text()).rstrip(":"), clean(value.get_text())))
+        # методы оплаты внутри блока условий (у запросов)
+        for p in a.select("div.space-y-2 > p"):
+            if not p.select_one(".text-muted"):
+                methods += [clean(c.get_text()) for c in p.select(".chip")]
 
-        methods, geos, extra, rate = [], [], 0, ""
+        geos, extra, rate = [], 0, ""
         footer = a.select_one("div.border-t")
         if footer:
             rate_el = footer.select_one("p.font-numeral")
@@ -131,7 +157,7 @@ def parse_cards(page_html: str) -> list[Offer]:
                 rate = clean(rate_el.get_text(" "))
             mbox = footer.select_one("span.flex-wrap")
             if mbox:
-                methods = [clean(c.get_text()) for c in mbox.select(".chip")]
+                methods += [clean(c.get_text()) for c in mbox.select(".chip")]
             geos = [s["title"] for s in footer.select("span[title]")]
             more = footer.select_one("span.text-faint")
             if more:
@@ -142,7 +168,9 @@ def parse_cards(page_html: str) -> list[Offer]:
             Offer(
                 key=key,
                 url=BASE + href,
-                kind=clean(badge.get_text()) if badge else "",
+                kind=kind,
+                kind_type=kind_type,
+                audience_label=audience_label,
                 title=title,
                 company=clean(company_el.get_text()) if company_el else "",
                 date=time_el.get("datetime", "") if time_el else "",
@@ -164,7 +192,8 @@ def has_next_page(page_html: str, page: int) -> bool:
 
 
 def collect(section: str) -> list[Offer]:
-    url = f"{BASE}/{LOCALE}/catalog/{section}"
+    # "all" — общий каталог компаний (/catalog), остальные — подразделы (/catalog/<section>)
+    url = f"{BASE}/{LOCALE}/catalog" + ("" if section == "all" else f"/{section}")
     result: dict[str, Offer] = {}
     for page in range(1, MAX_PAGES + 1):
         params = {"geo": GEO}
@@ -183,7 +212,7 @@ def collect(section: str) -> list[Offer]:
 
 def format_message(o: Offer) -> str:
     e = html.escape
-    icon = "🆕" if o.kind.lower() in ("offer", "предложение") else "📩"
+    icon = {"offer": "🆕", "request": "📩", "company": "🏢"}.get(o.kind_type, "🆕")
     lines = [f"{icon} <b>{e(o.title)}</b>"]
     meta = " · ".join(x for x in (e(o.kind), e(o.company), e(o.date_text)) if x)
     if meta:
@@ -196,7 +225,8 @@ def format_message(o: Offer) -> str:
     if o.rate:
         lines.append(f"💰 <b>{e(o.rate)}</b>")
     if o.audience:
-        lines.append(f"👥 {e(', '.join(o.audience))}")
+        prefix = f"{e(o.audience_label)}: " if o.audience_label else ""
+        lines.append(f"👥 {prefix}{e(', '.join(o.audience))}")
     for k, v in o.fields:
         lines.append(f"• {e(k)}: {e(v)}")
     if o.methods:
@@ -245,6 +275,9 @@ def save_state(state: dict) -> None:
     STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
 
 
+SECTION_NAMES = {"all": "компании", "offers": "предложения", "requests": "запросы"}
+
+
 def main() -> int:
     if not DRY_RUN and (not BOT_TOKEN or not CHAT_ID):
         print("Нужны TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID (или DRY_RUN=1)", file=sys.stderr)
@@ -253,12 +286,20 @@ def main() -> int:
     state = load_state()
     first_run = state is None
     seen: dict = (state or {}).get("seen", {})
+    # старые файлы состояния (до появления поля sections) отслеживали только offers
+    known_sections = set((state or {}).get("sections", ["offers"] if state else []))
+    fresh_sections = [s for s in SECTIONS if s not in known_sections]
 
     current: list[Offer] = []
+    silent_keys: set[str] = set()   # элементы новых разделов — запоминаем без отправки
+    counts_by_section: dict[str, int] = {}
     for section in SECTIONS:
         items = collect(section)
         print(f"[{section}] geo={GEO}: найдено {len(items)}")
         current.extend(items)
+        counts_by_section[section] = len(items)
+        if section in fresh_sections and not SEND_EXISTING:
+            silent_keys.update(o.key for o in items)
 
     if not current:
         # Пустой результат почти наверняка означает, что сайт поменял вёрстку
@@ -266,25 +307,36 @@ def main() -> int:
         print("Не найдено ни одной карточки — проверьте разметку сайта.", file=sys.stderr)
         return 1
 
-    new = [o for o in current if o.key not in seen]
+    def persist() -> None:
+        save_state({"geo": GEO, "sections": sorted(known_sections | set(SECTIONS)), "seen": seen})
+
+    unique: dict[str, Offer] = {}
+    for o in current:
+        unique.setdefault(o.key, o)
+    new = [o for k, o in unique.items() if k not in seen and k not in silent_keys]
     new.sort(key=lambda o: o.date)  # старые первыми, чтобы в чате был хронологический порядок
 
-    if first_run and not SEND_EXISTING:
-        send_telegram(
-            f"✅ Мониторинг nominal.top запущен\nGEO: <b>{html.escape(GEO)}</b>, "
-            f"разделы: {html.escape(', '.join(SECTIONS))}\n"
-            f"Сейчас на сайте: {len(current)}. Буду присылать только новые."
+    if fresh_sections and not SEND_EXISTING:
+        names = ", ".join(SECTION_NAMES.get(s, s) for s in fresh_sections)
+        counts = ", ".join(
+            f"{SECTION_NAMES.get(s, s)}: {counts_by_section.get(s, 0)}"
+            for s in fresh_sections
         )
-    else:
-        for o in new:
-            send_telegram(format_message(o))
-            seen[o.key] = {"title": o.title, "date": o.date}
-            save_state({"geo": GEO, "seen": seen})  # сохраняем после каждой отправки
+        head = "✅ Мониторинг nominal.top запущен" if first_run else "➕ Добавлены разделы для отслеживания"
+        send_telegram(
+            f"{head}\nGEO: <b>{html.escape(GEO)}</b>, разделы: {html.escape(names)}\n"
+            f"Сейчас на сайте — {html.escape(counts)}.\nБуду присылать только новые."
+        )
 
-    for o in current:
-        seen.setdefault(o.key, {"title": o.title, "date": o.date})
-    save_state({"geo": GEO, "seen": seen})
-    print(f"Новых: {0 if first_run and not SEND_EXISTING else len(new)}")
+    for o in new:
+        send_telegram(format_message(o))
+        seen[o.key] = {"title": o.title, "date": o.date}
+        persist()  # сохраняем после каждой отправки
+
+    for k, o in unique.items():
+        seen.setdefault(k, {"title": o.title, "date": o.date})
+    persist()
+    print(f"Новых отправлено: {len(new)}")
     return 0
 
 

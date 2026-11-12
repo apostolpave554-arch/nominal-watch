@@ -32,7 +32,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GEO: ${{ vars.GEO || 'AR' }}
           LOCALE: ${{ vars.LOCALE || 'ru' }}
-          SECTIONS: ${{ vars.SECTIONS || 'offers' }}
+          SECTIONS: ${{ vars.SECTIONS || 'all,offers,requests' }}
         run: python nominal_watch.py
 
       - name: Save state
