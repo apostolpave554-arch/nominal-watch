@@ -1,0 +1,43 @@
+name: nominal-watch
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # каждые 10 минут (GitHub может запускать с задержкой)
+  workflow_dispatch: {}       # ручной запуск кнопкой "Run workflow"
+
+permissions:
+  contents: write             # чтобы закоммитить seen.json
+
+concurrency:
+  group: nominal-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Check new offers
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEO: ${{ vars.GEO || 'AR' }}
+          LOCALE: ${{ vars.LOCALE || 'ru' }}
+          SECTIONS: ${{ vars.SECTIONS || 'offers' }}
+        run: python nominal_watch.py
+
+      - name: Save state
+        run: |
+          git config user.name  "nominal-bot"
+          git config user.email "nominal-bot@users.noreply.github.com"
+          git add seen.json
+          git diff --cached --quiet || (git commit -m "update seen offers" && git push)
