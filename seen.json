@@ -1,17 +1,138 @@
 {
  "geo": "AR",
+ "sections": [
+  "all",
+  "offers",
+  "requests"
+ ],
  "seen": {
+  "catalog/events/phr": {
+   "date": "",
+   "title": "PHR"
+  },
+  "catalog/legal/varela-vidal-abogados": {
+   "date": "",
+   "title": "Varela Vidal Abogados"
+  },
+  "catalog/merchants/argentina-app-embedded-checkout-payouts": {
+   "date": "2026-09-02T09:00:00.000Z",
+   "title": "Приложению из Аргентины нужны приём карт и выплаты продавцам на CBU, CVU и Alias"
+  },
+  "catalog/merchants/argentina-marketplace-split-payments": {
+   "date": "2026-04-01T09:00:00.000Z",
+   "title": "Маркетплейс в Аргентине ищет шлюз со сплитом комиссии и выплатами продавцам"
+  },
+  "catalog/merchants/consumer-lender-payin-payout-latam-romania": {
+   "date": "2026-06-24T09:00:00.000Z",
+   "title": "Потребительскому кредитору нужны приём и выплаты в Аргентине, Колумбии, Перу и Румынии"
+  },
+  "catalog/merchants/forex-cfd-local-rails-mena-latam": {
+   "date": "2026-06-24T09:00:00.000Z",
+   "title": "Форекс- и CFD-брокерам нужны локальные платёжные методы в MENA и Латинской Америке"
+  },
+  "catalog/merchants/local-payment-infrastructure-partners": {
+   "date": "2026-10-13T08:34:58.846Z",
+   "title": "Локальная платёжная инфраструктура в Бангладеш, Индии, Аргентине, Казахстане и Доминикане"
+  },
+  "catalog/merchants/psp-partners-india-usa-asia": {
+   "date": "2026-10-13T08:34:58.833Z",
+   "title": "Нужны стабильные PSP-партнёры для Индии, США, Бангладеш, Таиланда и Аргентины"
+  },
+  "catalog/psp/1payments": {
+   "date": "",
+   "title": "1Payments"
+  },
+  "catalog/psp/acepay": {
+   "date": "",
+   "title": "AcePay"
+  },
+  "catalog/psp/ampay": {
+   "date": "",
+   "title": "AmPay"
+  },
+  "catalog/psp/ampay-argentina-p2p-payments": {
+   "date": "2026-05-04T09:00:00.000Z",
+   "title": "AmPay: P2P-платежи в Аргентине через Lemon"
+  },
+  "catalog/psp/argentina-ars-payment-teams": {
+   "date": "2026-10-07T09:00:00.000Z",
+   "title": "Команды на Аргентину (ARS): PayIn 1%, PayOut 0,5%"
+  },
+  "catalog/psp/argentina-mercado-pago-offer": {
+   "date": "2026-09-03T09:00:00.000Z",
+   "title": "Mercado Pago для Аргентины: депозиты и выплаты через CVU/CBU"
+  },
+  "catalog/psp/argentina-psp-bank-transfer": {
+   "date": "2026-10-08T09:00:00.000Z",
+   "title": "Аргентина: PSP ищет трафик на банковские переводы"
+  },
+  "catalog/psp/argentina-uruguay-ukraine-teams": {
+   "date": "2026-10-12T09:00:00.000Z",
+   "title": "Команды на Аргентину, Уругвай и Украину: банковские переводы"
+  },
+  "catalog/psp/betatransfer-binance-pay-local-routes": {
+   "date": "2026-08-17T09:00:00.000Z",
+   "title": "Betatransfer: подключение Binance Pay и локальных платёжных маршрутов"
+  },
+  "catalog/psp/bitget-wallet-local-rails-partners": {
+   "date": "2026-08-13T09:00:00.000Z",
+   "title": "Bitget Wallet ищет локальные платёжные системы, эквайеров и карточных партнёров"
+  },
+  "catalog/psp/business-expansion-llc": {
+   "date": "",
+   "title": "Business Expansion LLC"
+  },
+  "catalog/psp/cobro-inmediato": {
+   "date": "",
+   "title": "Cobro Inmediato"
+  },
+  "catalog/psp/dlocal": {
+   "date": "",
+   "title": "dLocal"
+  },
+  "catalog/psp/echorch-payment": {
+   "date": "",
+   "title": "Echorch Payment"
+  },
+  "catalog/psp/ereus-psp": {
+   "date": "",
+   "title": "Ereus PSP"
+  },
   "catalog/psp/ereus-psp-terms": {
    "date": "2026-10-16T15:55:08.327Z",
    "title": "Ereus PSP: условия работы"
+  },
+  "catalog/psp/ezeewallet": {
+   "date": "",
+   "title": "eZeeWallet"
+  },
+  "catalog/psp/fondy": {
+   "date": "",
+   "title": "Fondy"
   },
   "catalog/psp/fondy-terms": {
    "date": "2026-10-16T15:55:09.901Z",
    "title": "Fondy: условия работы"
   },
+  "catalog/psp/insideex": {
+   "date": "",
+   "title": "InsideEx"
+  },
   "catalog/psp/insideex-terms": {
    "date": "2026-10-16T15:55:11.228Z",
    "title": "InsideEx: условия работы"
+  },
+  "catalog/psp/ischem-merchey-po-argentine": {
+   "date": "2026-10-30T19:26:09.033Z",
+   "title": "Ищем мерчантов по Аргентине"
+  },
+  "catalog/psp/jeton-wallet": {
+   "date": "",
+   "title": "Jeton Wallet"
+  },
+  "catalog/psp/jupiter": {
+   "date": "",
+   "title": "Jupiter"
   },
   "catalog/psp/jupiter-terms": {
    "date": "2026-10-16T15:55:11.749Z",
@@ -21,29 +142,169 @@
    "date": "2026-10-16T15:55:12.082Z",
    "title": "LOOPEX: условия работы"
   },
+  "catalog/psp/lyra": {
+   "date": "",
+   "title": "Lyra"
+  },
+  "catalog/psp/mercado-pago": {
+   "date": "",
+   "title": "Mercado Pago"
+  },
   "catalog/psp/mercado-pago-terms": {
    "date": "2026-10-16T15:55:12.778Z",
    "title": "Mercado Pago: условия работы"
+  },
+  "catalog/psp/monnet-payments": {
+   "date": "",
+   "title": "Monnet Payments"
+  },
+  "catalog/psp/movantis": {
+   "date": "",
+   "title": "Movantis"
+  },
+  "catalog/psp/muchbetter": {
+   "date": "",
+   "title": "MuchBetter"
+  },
+  "catalog/psp/naranja-x": {
+   "date": "",
+   "title": "Naranja X"
+  },
+  "catalog/psp/nirvana-2": {
+   "date": "",
+   "title": "Nirvana"
   },
   "catalog/psp/nirvana-terms": {
    "date": "2026-10-16T15:55:13.501Z",
    "title": "Nirvana: условия работы"
   },
+  "catalog/psp/pago-tic": {
+   "date": "",
+   "title": "Pago TIC"
+  },
+  "catalog/psp/pagseguro": {
+   "date": "",
+   "title": "PagSeguro"
+  },
+  "catalog/psp/pagsmile": {
+   "date": "",
+   "title": "Pagsmile"
+  },
   "catalog/psp/pagsmile-terms": {
    "date": "2026-10-16T15:55:14.599Z",
    "title": "Pagsmile: условия работы"
+  },
+  "catalog/psp/paswix": {
+   "date": "",
+   "title": "Paswix"
+  },
+  "catalog/psp/paylee": {
+   "date": "",
+   "title": "Paylee"
+  },
+  "catalog/psp/payment-teams-argentina-transfers": {
+   "date": "2024-11-29T09:00:00.000Z",
+   "title": "Набор платёжных команд в Аргентине: банковские переводы"
+  },
+  "catalog/psp/paysafecard": {
+   "date": "",
+   "title": "PaysafeCard"
+  },
+  "catalog/psp/payu": {
+   "date": "",
+   "title": "PayU"
+  },
+  "catalog/psp/payway-argentina": {
+   "date": "",
+   "title": "Payway Argentina"
+  },
+  "catalog/psp/payz-psi-pay": {
+   "date": "",
+   "title": "Payz / PSI-Pay"
+  },
+  "catalog/psp/propago": {
+   "date": "",
+   "title": "Propago"
+  },
+  "catalog/psp/rebill": {
+   "date": "",
+   "title": "Rebill"
   },
   "catalog/psp/rebill-terms": {
    "date": "2026-10-16T15:55:17.539Z",
    "title": "Rebill: условия работы"
   },
+  "catalog/psp/simple-app": {
+   "date": "",
+   "title": "Simple.app"
+  },
+  "catalog/psp/skrill": {
+   "date": "",
+   "title": "Skrill"
+  },
+  "catalog/psp/starex-2": {
+   "date": "",
+   "title": "Starex"
+  },
+  "catalog/psp/swapple": {
+   "date": "",
+   "title": "Swapple"
+  },
+  "catalog/psp/trustee": {
+   "date": "",
+   "title": "Trustee"
+  },
+  "catalog/psp/unicompay-2": {
+   "date": "",
+   "title": "UniComPay"
+  },
   "catalog/psp/unicompay-terms": {
    "date": "2026-10-16T15:55:19.471Z",
    "title": "UniComPay: условия работы"
   },
+  "catalog/psp/uniteller-financial-services": {
+   "date": "",
+   "title": "UniTeller Financial Services"
+  },
+  "catalog/psp/wise": {
+   "date": "",
+   "title": "Wise"
+  },
+  "catalog/psp/yuzhnaya-koreya": {
+   "date": "2026-10-30T19:23:12.489Z",
+   "title": "Ищем опытных трейдеров и команды по Южной Кореи"
+  },
+  "catalog/tech/dock": {
+   "date": "",
+   "title": "dock"
+  },
+  "catalog/tech/ischem-psp-i-platezhnyh-partnerov-dlya-integratsii-v-paystar-direct-connect": {
+   "date": "2026-11-03T14:38:15.891Z",
+   "title": "Ищем PSP и платёжных партнёров для интеграции в PayStar Direct Connect"
+  },
+  "catalog/tech/khipu": {
+   "date": "",
+   "title": "Khipu"
+  },
+  "catalog/tech/paystar": {
+   "date": "",
+   "title": "PayStar"
+  },
   "catalog/tech/paystar-direct-connect-edinyy-api-dlya-podklyucheniya-platezhnyh-provayderov": {
    "date": "2026-11-03T14:46:48.830Z",
    "title": "PayStar Direct Connect — единый API для подключения платёжных провайдеров"
+  },
+  "catalog/tech/prometeo-openbanking": {
+   "date": "",
+   "title": "Prometeo OpenBanking"
+  },
+  "catalog/tech/verifik": {
+   "date": "",
+   "title": "Verifik"
+  },
+  "catalog/traders/mrk-group": {
+   "date": "",
+   "title": "MRK Group"
   }
  }
 }
