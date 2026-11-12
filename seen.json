@@ -210,6 +210,10 @@
    "date": "",
    "title": "PaysafeCard"
   },
+  "catalog/psp/paystar": {
+   "date": "",
+   "title": "PayStar"
+  },
   "catalog/psp/payu": {
    "date": "",
    "title": "PayU"
